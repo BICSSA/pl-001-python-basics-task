@@ -8,3 +8,6 @@ __pycache__/
 # Linter / type-checker caches
 .ruff_cache/
 .mypy_cache/
+
+# Claude
+.claude
