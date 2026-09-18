@@ -1,0 +1,7 @@
+[project]
+name = "pl-001-python-basics-task"
+version = "0.1.0"
+description = "PL-001 course complex task"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = []
