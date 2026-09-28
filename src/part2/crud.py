@@ -15,10 +15,12 @@ is already taken.
 from decimal import Decimal
 
 from .storage import (
+    FIELDS_NAME_INDEX,
+    FIELDS_PRICE_INDEX,
+    FIELDS_QUANTITY_INDEX,
     NAME_INDEX,
     PRODUCT_ID_INDEX,
     PRODUCT_ID_MIN,
-    QUANTITY_INDEX,
     Product,
 )
 from .utils import normalize_price
@@ -59,15 +61,15 @@ def create_product(
         ``storage`` is left unchanged and a message naming the clashing
         name is printed.
     """
-    if any(fields[NAME_INDEX - 1] == product[NAME_INDEX] for product in storage):
-        print(f"product name {fields[NAME_INDEX - 1]} is already taken")
+    if any(fields[FIELDS_NAME_INDEX] == product[NAME_INDEX] for product in storage):
+        print(f"product name {fields[FIELDS_NAME_INDEX]} is already taken")
         return None
 
-    new_id = generate_product_id()
-    new_price = normalize_price(fields[NAME_INDEX - 1])
+    new_id = generate_product_id(storage)
+    new_price = normalize_price(fields[FIELDS_PRICE_INDEX])
 
     storage.append(
-        (new_id, fields[NAME_INDEX - 1], new_price, fields[QUANTITY_INDEX - 1])
+        (new_id, fields[FIELDS_NAME_INDEX], new_price, fields[FIELDS_QUANTITY_INDEX])
     )
 
     return new_id
@@ -120,8 +122,8 @@ def update_product(
     index_modifiable_product = -1
 
     for index in range(len(storage)):
-        if storage[index][NAME_INDEX] == fields[NAME_INDEX - 1]:
-            print(f"product name {fields[NAME_INDEX - 1]} is already taken")
+        if storage[index][NAME_INDEX] == fields[FIELDS_NAME_INDEX]:
+            print(f"product name {fields[FIELDS_NAME_INDEX]} is already taken")
             return None
 
         if storage[index][PRODUCT_ID_INDEX] == product_id:
@@ -131,17 +133,16 @@ def update_product(
         print(f"no product with id {product_id}")
         return None
 
-    new_price = normalize_price(fields[NAME_INDEX - 1])
+    new_price = normalize_price(fields[FIELDS_PRICE_INDEX])
 
     storage[index_modifiable_product] = (
         product_id,
-        fields[NAME_INDEX - 1],
+        fields[FIELDS_NAME_INDEX],
         new_price,
-        fields[QUANTITY_INDEX - 1],
+        fields[FIELDS_QUANTITY_INDEX],
     )
 
     return storage[index_modifiable_product]
-        
 
 
 def delete_product(storage: list[Product], product_id: int) -> int | None:
@@ -160,8 +161,7 @@ def delete_product(storage: list[Product], product_id: int) -> int | None:
     for i, product in enumerate(storage):
         if product[PRODUCT_ID_INDEX] == product_id:
             del storage[i]
-            return product
+            return product_id
 
     print(f"no product with id {product_id}")
-
     return None

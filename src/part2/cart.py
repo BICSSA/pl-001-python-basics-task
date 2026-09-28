@@ -70,7 +70,6 @@ def add_to_cart(
         (product[NAME_INDEX], product[PRICE_INDEX], product[QUANTITY_INDEX] - quantity),
     )
 
-
     for index_cart_line in range(len(cart)):
         if cart[index_cart_line][LINE_PRODUCT_ID_INDEX] == product_id:
             cart[index_cart_line] = (
@@ -82,6 +81,7 @@ def add_to_cart(
     cart.append((product_id, quantity))
     return (product_id, quantity)
 
+
 def find_cart_line(cart: list[CartLine], product_id: int) -> CartLine | None:
     """Find line of the product from cart
 
@@ -90,7 +90,7 @@ def find_cart_line(cart: list[CartLine], product_id: int) -> CartLine | None:
     Args:
         cart: user's shopping cart
         product_id: The identifier of the product to find.
-    
+
     Returns:
         cart_line if all correct
         `None` if identifier of the product don't found
@@ -98,9 +98,10 @@ def find_cart_line(cart: list[CartLine], product_id: int) -> CartLine | None:
     for cart_line in cart:
         if cart_line[LINE_PRODUCT_ID_INDEX] == product_id:
             return cart_line
-    
+
     print(f"product {product_id} is not in the cart")
     return None
+
 
 def update_cart_line(
     cart: list[CartLine], product_id: int, quantity: int
@@ -113,24 +114,22 @@ def update_cart_line(
         cart: user's shopping cart
         product_id: The identifier of the product to find.
         quantity: New product quantity value
-    
+
     Returns:
         cart_line if all correct
         `None` if identifier of the product don't found
     """
     for index_cart_line in range(len(cart)):
         if cart[index_cart_line][LINE_PRODUCT_ID_INDEX] == product_id:
-
             if quantity == 0:
                 del cart[index_cart_line]
             else:
                 cart[index_cart_line] = (product_id, quantity)
-            
             return (product_id, quantity)
 
     print(f"product {product_id} is not in the cart")
     return None
-            
+
 
 def remove_from_cart(
     storage: list[Product],
@@ -164,9 +163,10 @@ def remove_from_cart(
     if not cart_line:
         return None
 
-    if cart[LINE_QUANTITY_INDEX] < quantity:
+    if cart_line[LINE_QUANTITY_INDEX] < quantity:
         print(
-            f"cart holds only in cart unit(s) of product {product_id}, cannot remove {quantity}"
+            f"cart holds only {cart_line[LINE_QUANTITY_INDEX]} unit(s) "
+            f"of product {product_id}, cannot remove {quantity}"
         )
 
         return None
